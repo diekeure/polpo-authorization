@@ -1,0 +1,38 @@
+{
+  "name": "polpo-authorization",
+  "version": "1.0.0",
+  "description": "angular module for authorization on the Polpo API",
+  "directories": {
+    "test": "test"
+  },
+  "main": "dist/polpo-authorization.min.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.1",
+    "jasmine-core": "^2.3.4",
+    "jshint": "^2.8.0",
+    "karma": "^0.13.15",
+    "karma-coverage": "^0.5.3",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "phantomjs": "^1.9.18"
+  },
+  "scripts": {
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diekeure/polpo-authorization.git"
+  },
+  "author": "Thomas Ghesquiere",
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/diekeure/polpo-authorization/issues"
+  },
+  "homepage": "https://github.com/diekeure/polpo-authorization#readme"
+}
