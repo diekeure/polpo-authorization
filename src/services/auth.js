@@ -38,7 +38,7 @@
 	 *		-> dk-access-owner is optional, when passed and matches the user id, allow access
 	 */
 	
-	angular.module('polpo.authorization').factory('AuthService', AuthService);
+	angular.module('polpo.authorization', []).factory('AuthService', AuthService);
 	/* @ngInject */
 	function AuthService($state)
 	{
