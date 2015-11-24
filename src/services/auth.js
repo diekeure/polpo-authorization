@@ -1,8 +1,6 @@
-/* global angular */
-
-'use strict';
-
 (function () {
+	'use strict';
+
 	/*
 	 * AuthService
 	 * 
@@ -38,8 +36,9 @@
 	 *		-> dk-access-owner is optional, when passed and matches the user id, allow access
 	 */
 	
-	angular.module('polpo.authorization', []).factory('AuthService', AuthService);
-	/* @ngInject */
+	angular.module('polpo.authorization').factory('AuthService', AuthService);
+	
+	AuthService.$inject = ['$state'];
 	function AuthService($state)
 	{
 		var currentUser = null;
@@ -47,7 +46,8 @@
 		return {
 			authorize: authorize,
 			hasAccess: hasAccess,
-			setUser: setUser
+			setUser: setUser,
+			getUserRoles: getUserRoles
 		};
 		
 		/*
@@ -162,7 +162,7 @@
 		}
 		
 		/*
-		 * Merge access rules from route and (optionally) parents
+		 * Check permissions for specified route
 		 * 
 		 * @param {string} toState - route name
 		 * @returns {object} mergedAccess - Returns merged access rules
@@ -173,9 +173,9 @@
 				authorized = authorize(access.permissions, access.type);
 			
 			return authorized;
-
+			
+			// Merge access rules from route and (optionally) parents
 			function getAccess(routeName, mergedAccess) {
-				//console.log('route:', routeName);
 				var route = $state.get(routeName),
 					parentAccess, parentName,
 					i, len;
@@ -232,8 +232,17 @@
 		/*
 		 * cache user profile
 		 */
-		function setUser(user) {
+		function setUser(user)
+		{
 			currentUser = user;
+		}
+		
+		/*
+		 * watch for changes in user roles
+		 */
+		function getUserRoles()
+		{
+			return currentUser ? currentUser.roles : null;
 		}
 	}
 })();
