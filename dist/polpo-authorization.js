@@ -240,7 +240,6 @@
 		// add settings to prototype
 		this.settings = function(opts) {
 			if (opts !== undefined) {
-				console.log('options');
 				angular.extend(options, opts);
 				// if our user is a promise, make sure it's resolved
 				if (options.resolve) {
@@ -253,7 +252,7 @@
 		// When we request a service in our app config, the $injector is responsible for finding the correct service provider,
 		// instantiating it and then calling its $get service function to get the instance of the service.
 		// https://docs.angularjs.org/api/auto/service/$provide
-		this.$get = ['$state', '$rootScope', '$injector', function($state, $rootScope, $injector) {
+		this.$get = function($state, $rootScope, $injector) {	// note: remember to add DI to this.$get.$inject (see just below this function)
 			// check access when page is opened
 			$rootScope.$on('$stateChangeStart', changeStart);
 			function changeStart(event, toState, toParams) {	//, fromState, fromParams
@@ -266,7 +265,7 @@
 				if (user() === false) {
 					$injector.invoke(options.resolve).then(function(usr) {
 						user(usr);	// update cached user
-						$rootScope.$state.go(toState.name, toParams);	//, {reload: true}
+						$rootScope.$state.go(toState.name, toParams, {reload: true});
 					}, function () {
 						return options.onLogin ? $injector.invoke(options.onLogin) : false;
 					});
@@ -509,6 +508,7 @@
 			{
 				return currentUser ? currentUser[options.userRoles] : null;
 			}
-		}];
+		};
+		this.$get.$inject = ['$state', '$rootScope', '$injector'];
 	}
 })();
