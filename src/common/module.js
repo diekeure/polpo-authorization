@@ -3,5 +3,5 @@
 (function () {
 	'use strict';
 	
-	angular.module('polpo.authorization', []);
+	angular.module('polpo.authorization', ['ui.router']);
 })();
