@@ -188,6 +188,9 @@
 					return status.authorized;
 				}
 
+				if (!angular.isArray(requiredPermissions)) {
+					requiredPermissions = requiredPermissions.split(',');
+				}
 				// if required permissions is an empty array, every logged in user has access
 				if (requiredPermissions.length === 0) {
 					return status.authorized;
