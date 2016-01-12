@@ -227,15 +227,20 @@
 	{
 		var currentUser = null,
 			options = {
+				allowedRoles: [],
+				allowedTypes: [],
 				ignore: null,
 				onLogin: null,
 				onDenied: null,
 				resolve: null,
 				rolesMap: null,
 				userId: 'id',
-				userRoles: 'roles'
+				userRoles: 'roles',
+				userType: 'type'
 			},
-			resolveState = true;
+			resolveState = true,
+			rolesCheck = true,
+			typeCheck = true;
 
 		// add settings to prototype
 		this.settings = function(opts) {
@@ -245,6 +250,16 @@
 				if (options.resolve) {
 					resolveState = false;
 				}
+				
+				if (angular.isString(options.allowedRoles)) {
+					options.allowedRoles = [options.allowedRoles];
+				}
+				rolesCheck = (options.allowedRoles.length === 0); // if there are no allowedRoles specified, rolesCheck can be skipped
+				
+				if (angular.isString(options.allowedTypes)) {
+					options.allowedTypes = [options.allowedTypes];
+				}
+				typeCheck = (options.allowedTypes.length === 0); // if there are no allowedTypes specified, typeCheck can be skipped
 			}
 			return options;
 		};
@@ -365,6 +380,11 @@
 				if (currentUser === null) {
 					return status.loginRequired;
 				}
+				
+				// check allowed type and/or roles
+				if (typeCheck === false || rolesCheck === false) {
+					return status.loginRequired;
+				}
 
 				// if owner was passed, it must mean he has access
 				if (ownerId !== undefined && ownerId.toString() === currentUser.id.toString()) {
@@ -385,7 +405,8 @@
 				}
 
 				// map backend roles to local permissions
-				for(i = 0, len = userRoles.length; i < len ; i++) {
+				len = userRoles.length;
+				for(i = 0; i < len; i++) {
 					permission = userRoles[i].name;
 					if (roles[permission] === undefined) {
 						// if a role was passed that's not mapped, add it to the list of required roles
@@ -396,8 +417,9 @@
 					mappedRoles = mappedRoles.concat(roles[permission]);
 				}
 
+				len = requiredPermissions.length;
 				if (permissionCheckType === match.all) {
-					for(i = 0, len = requiredPermissions.length; i < len ; i++) {
+					for(i = 0; i < len; i++) {
 						permission = requiredPermissions[i];
 						// if a required permission is not in our list of user roles, i'm unauthorised
 						if (mappedRoles.indexOf(permission) === -1) {
@@ -408,7 +430,7 @@
 					return status.authorized;
 				}
 				if (permissionCheckType === match.one) {
-					for(i = 0, len = requiredPermissions.length; i < len ; i++) {
+					for(i = 0; i < len; i++) {
 						permission = requiredPermissions[i];
 						// as soon as one role is matched, we're good
 						if (mappedRoles.indexOf(permission) > -1) {
@@ -452,7 +474,8 @@
 					if (parentAccess.permissions !== undefined) {
 						mergedAccess.permissions = mergedAccess.permissions || [];
 						// add without duplicates
-						for (i = 0, len = parentAccess.permissions.length; i < len; i++) {
+						len = parentAccess.permissions.length;
+						for (i = 0; i < len; i++) {
 							if (mergedAccess.permissions.indexOf(parentAccess.permissions[i]) === -1) {
 								mergedAccess.permissions.push(parentAccess.permissions[i]);
 							}
@@ -500,6 +523,23 @@
 				if (usr !== undefined) {
 					currentUser = usr;
 					resolveState = true;	// assume that a user is only set after promise is resolved
+					
+					// reset checks
+					rolesCheck = (options.allowedRoles.length === 0);
+					typeCheck = (options.allowedTypes.length === 0);
+					if (usr !== null) {		// just logged in or updated
+						// only perform additional checks when the options are set
+						if (rolesCheck === false) {
+							// find allowed roles in users roles
+							var allowedRoles = usr[options.userRoles].filter(function(role) {
+								return (options.allowedRoles.indexOf(role.name) !== -1);
+							});
+							rolesCheck = (allowedRoles.length !== 0);
+						}
+						if (typeCheck === false) {
+							typeCheck = (options.allowedTypes.indexOf(usr[options.userType]) !== -1);
+						}
+					}
 				}
 				return resolveState ? currentUser : false;
 			}
