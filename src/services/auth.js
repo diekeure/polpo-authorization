@@ -46,10 +46,12 @@
 			options = {
 				allowedRoles: [],
 				allowedTypes: [],
-				ignore: null,
+				ignore: true,
 				onLogin: null,
 				onDenied: null,
-				resolve: null,
+				resolve: function(Person) {
+					return Person.getCurrentUser();
+				},
 				rolesMap: null,
 				userId: 'id',
 				userRoles: 'roles',
@@ -89,6 +91,9 @@
 			$rootScope.$on('$stateChangeStart', changeStart);
 			function changeStart(event, toState, toParams) {	//, fromState, fromParams
 				// if pre-checks return true, we're authorized
+				if (options.ignore === true) {
+					return;
+				}
 				if (options.ignore && options.ignore(toState.name)) {
 					return;
 				}
@@ -132,7 +137,8 @@
 				authorize: authorize,
 				//hasAccess: hasAccess,
 				user: user,
-				getUserRoles: getUserRoles
+				getUserRoles: getUserRoles,
+				userPromise: userPromise
 			};
 			
 			/*
@@ -367,6 +373,16 @@
 			function getUserRoles()
 			{
 				return currentUser ? currentUser[options.userRoles] : null;
+			}
+			
+			function userPromise()
+			{
+				return $injector.invoke(options.resolve);
+//						// actually not needed here, since we call it in the Person.getCurrentUser() whenever the user get loaded
+//						// another disadvantage of calling this function here, is that even for a cached user, this would be re-run
+//						.then(function(usr) {
+//							return user(usr);	// update cached user (and return it so it can be chained to another 'then 'function)
+//						});
 			}
 		};
 		this.$get.$inject = ['$state', '$rootScope', '$injector'];
