@@ -1,9 +1,8 @@
 {
   "name": "polpo-authorization",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "angular module for authorization on the Polpo API",
   "directories": {
-    "test": "test"
   },
   "main": "dist/polpo-authorization.min.js",
   "dependencies": {},
