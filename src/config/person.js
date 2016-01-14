@@ -4,13 +4,15 @@
     'use strict';
 
 	angular.module('polpo.authorization').config(authConfig);
-	/* @ngInject */
+	
+	authConfig.$inject = ['$provide', 'AuthServiceProvider'];
     function authConfig($provide, AuthServiceProvider) {
 		
-		// decorate Person
-		/* @ngInject */
-		$provide.decorator('Person', function($delegate, $rootScope, $q, AuthService) {
-			
+		$provide.decorator('Person', personDecorator);
+		
+		personDecorator.$inject = ['$delegate', '$rootScope', '$q', 'AuthService'];
+		function personDecorator($delegate, $rootScope, $q, AuthService)
+		{
 			$delegate.getCurrentUser = function(refresh, cb) {
 				var currentUser = $delegate.getCachedCurrent();
 				// allow callback function without refresh parameter
@@ -43,8 +45,7 @@
 			};
 			
 			return $delegate;
-		});
-
+		}
 
 		AuthServiceProvider.settings({});
 		

@@ -11,13 +11,15 @@
     'use strict';
 
 	angular.module('polpo.authorization').config(authConfig);
-	/* @ngInject */
+	
+	authConfig.$inject = ['$provide', 'AuthServiceProvider'];
     function authConfig($provide, AuthServiceProvider) {
 		
-		// decorate Person
-		/* @ngInject */
-		$provide.decorator('Person', function($delegate, $rootScope, $q, AuthService) {
-			
+		$provide.decorator('Person', personDecorator);
+		
+		personDecorator.$inject = ['$delegate', '$rootScope', '$q', 'AuthService'];
+		function personDecorator($delegate, $rootScope, $q, AuthService)
+		{
 			$delegate.getCurrentUser = function(refresh, cb) {
 				var currentUser = $delegate.getCachedCurrent();
 				// allow callback function without refresh parameter
@@ -50,8 +52,7 @@
 			};
 			
 			return $delegate;
-		});
-
+		}
 
 		AuthServiceProvider.settings({});
 		
@@ -296,6 +297,8 @@
 			resolveState = true,
 			rolesCheck = true,
 			typeCheck = true;
+		// minification safe DI
+		options.resolve.$inject = ['Person'];
 
 		// add settings to prototype
 		this.settings = function(opts) {
@@ -322,7 +325,11 @@
 		// When we request a service in our app config, the $injector is responsible for finding the correct service provider,
 		// instantiating it and then calling its $get service function to get the instance of the service.
 		// https://docs.angularjs.org/api/auto/service/$provide
-		this.$get = function($state, $rootScope, $injector) {	// note: remember to add DI to this.$get.$inject (see just below this function)
+		this.$get = initService;
+		
+		initService.$inject = ['$state', '$rootScope', '$injector'];
+		function initService($state, $rootScope, $injector)
+		{
 			// check access when page is opened
 			$rootScope.$on('$stateChangeStart', changeStart);
 			function changeStart(event, toState, toParams) {	//, fromState, fromParams
@@ -620,7 +627,6 @@
 //							return user(usr);	// update cached user (and return it so it can be chained to another 'then 'function)
 //						});
 			}
-		};
-		this.$get.$inject = ['$state', '$rootScope', '$injector'];
+		}
 	}
 })();
