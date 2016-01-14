@@ -93,13 +93,28 @@
 		initService.$inject = ['$state', '$rootScope', '$injector'];
 		function initService($state, $rootScope, $injector)
 		{
-			// check access when page is opened
-			$rootScope.$on('$stateChangeStart', changeStart);
-			function changeStart(event, toState, toParams) {	//, fromState, fromParams
+			if (options.ignore !== true) {
+				// check access when page is opened
+				$rootScope.$on('$stateChangeStart', changeStart);
+			}
+			
+			/*
+			 * public properties
+			 */
+			return {
+				authorize: authorize,
+				//hasAccess: hasAccess,
+				user: user,
+				getUserRoles: getUserRoles,
+				userPromise: userPromise
+			};
+			
+			/*
+			 * private functions
+			 */
+			function changeStart(event, toState, toParams)	//, fromState, fromParams
+			{
 				// if pre-checks return true, we're authorized
-				if (options.ignore === true) {
-					return;
-				}
 				if (options.ignore && options.ignore(toState.name)) {
 					return;
 				}
@@ -137,15 +152,6 @@
 					}
 				}
 			}
-			
-			// public functions
-			return {
-				authorize: authorize,
-				//hasAccess: hasAccess,
-				user: user,
-				getUserRoles: getUserRoles,
-				userPromise: userPromise
-			};
 			
 			/*
 			 * Check access permissions by role
