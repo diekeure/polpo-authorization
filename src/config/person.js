@@ -10,8 +10,8 @@
 		
 		$provide.decorator('Person', personDecorator);
 		
-		personDecorator.$inject = ['$delegate', '$rootScope', '$q', 'AuthService'];
-		function personDecorator($delegate, $rootScope, $q, AuthService)
+		personDecorator.$inject = ['$delegate', '$rootScope', '$q', 'AuthService', 'LoopBackAuth', '$location'];
+		function personDecorator($delegate, $rootScope, $q, AuthService, LoopBackAuth, $location)
 		{
 			$delegate.getCurrentUser = function(refresh, cb) {
 				var currentUser = $delegate.getCachedCurrent();
@@ -43,6 +43,18 @@
 				});
 				return promise;
 			};
+
+			if(!$delegate.isAuthenticated()){
+				var params = $location.search();
+
+				// Handle response by adding properties to the LBAuth and then calling save
+				LoopBackAuth.currentUserId = params.user_id;
+				LoopBackAuth.accessTokenId = params.access_token;
+				// Note that you can also set LoopBackAuth.rememberMe which changes the storage from session to local.
+
+				// Saves the values to local storage.
+				LoopBackAuth.save();
+			}
 			
 			return $delegate;
 		}
