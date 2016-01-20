@@ -55,13 +55,17 @@
 				rolesMap: null,
 				userId: 'id',
 				userRoles: 'roles',
-				userType: 'type'
+				userType: 'type',
+				logout: function(Person) {
+					Person.logout();
+				}
 			},
 			resolveState = true,
 			rolesCheck = true,
 			typeCheck = true;
 		// minification safe DI
 		options.resolve.$inject = ['Person'];
+		options.logout.$inject = ['Person'];
 
 		// add settings to prototype
 		this.settings = function(opts) {
@@ -90,8 +94,8 @@
 		// https://docs.angularjs.org/api/auto/service/$provide
 		this.$get = initService;
 		
-		initService.$inject = ['$state', '$rootScope', '$injector', 'Person'];
-		function initService($state, $rootScope, $injector, Person)
+		initService.$inject = ['$state', '$rootScope', '$injector'];
+		function initService($state, $rootScope, $injector)
 		{
 			if (options.ignore !== true) {
 				// check access when page is opened
@@ -399,7 +403,7 @@
 			}
 
 			function logout(){
-				Person.logout();
+				options.logout();
 				user(null);
 			}
 		}
