@@ -57,7 +57,7 @@
 				userRoles: 'roles',
 				userType: 'type',
 				logout: function(Person) {
-					Person.logout();
+					return Person.logout();
 				}
 			},
 			resolveState = true,
@@ -403,7 +403,7 @@
 			}
 
 			function logout(){
-				options.logout();
+				$injector.invoke(options.logout);
 				user(null);
 			}
 		}

@@ -1,5 +1,12 @@
 /* global angular */
 
+(function () {
+	'use strict';
+	
+	angular.module('polpo.authorization', ['ui.router', 'lbServices']);
+})();
+/* global angular */
+
 (function(){
     'use strict';
 
@@ -63,13 +70,6 @@
 		
 	}
 
-})();
-/* global angular */
-
-(function () {
-	'use strict';
-	
-	angular.module('polpo.authorization', ['ui.router', 'lbServices']);
 })();
 (function () {
 	'use strict';
@@ -306,7 +306,7 @@
 				userRoles: 'roles',
 				userType: 'type',
 				logout: function(Person) {
-					Person.logout();
+					return Person.logout();
 				}
 			},
 			resolveState = true,
@@ -652,7 +652,7 @@
 			}
 
 			function logout(){
-				options.logout();
+				$injector.invoke(options.logout);
 				user(null);
 			}
 		}
