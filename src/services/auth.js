@@ -90,7 +90,7 @@
 		// https://docs.angularjs.org/api/auto/service/$provide
 		this.$get = initService;
 		
-		initService.$inject = ['$state', '$rootScope', '$injector'];
+		initService.$inject = ['$state', '$rootScope', '$injector', 'Person'];
 		function initService($state, $rootScope, $injector, Person)
 		{
 			if (options.ignore !== true) {
