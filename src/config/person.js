@@ -48,8 +48,8 @@
 				var params = $location.search();
 
 				// Handle response by adding properties to the LBAuth and then calling save
-				LoopBackAuth.currentUserId = params.user_id;
-				LoopBackAuth.accessTokenId = params.access_token;
+				LoopBackAuth.currentUserId = params.userId;
+				LoopBackAuth.accessTokenId = params.accessToken;
 				// Note that you can also set LoopBackAuth.rememberMe which changes the storage from session to local.
 
 				// Saves the values to local storage.

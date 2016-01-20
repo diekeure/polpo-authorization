@@ -91,7 +91,7 @@
 		this.$get = initService;
 		
 		initService.$inject = ['$state', '$rootScope', '$injector'];
-		function initService($state, $rootScope, $injector)
+		function initService($state, $rootScope, $injector, Person)
 		{
 			if (options.ignore !== true) {
 				// check access when page is opened
