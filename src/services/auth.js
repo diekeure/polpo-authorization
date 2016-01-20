@@ -106,7 +106,8 @@
 				//hasAccess: hasAccess,
 				user: user,
 				getUserRoles: getUserRoles,
-				userPromise: userPromise
+				userPromise: userPromise,
+				logout: logout
 			};
 			
 			/*
@@ -395,6 +396,11 @@
 //						.then(function(usr) {
 //							return user(usr);	// update cached user (and return it so it can be chained to another 'then 'function)
 //						});
+			}
+
+			function logout(){
+				Person.logout();
+				user(null);
 			}
 		}
 	}
