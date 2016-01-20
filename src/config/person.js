@@ -30,7 +30,7 @@
 				}
 				
 				// update from backend, returns promise
-				var promise = $delegate.getCurrent({filter: {include: ['personPreferences', 'roles']}}).$promise;
+				var promise = $delegate.getCurrent().$promise;
 				promise.then(function(user) {
 					AuthService.user(user);
 					// send global event that user is updated
