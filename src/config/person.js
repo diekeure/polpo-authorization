@@ -14,7 +14,7 @@
 		function personDecorator($delegate, $rootScope, $q, AuthService, LoopBackAuth, $location)
 		{
 			$delegate.getCurrentUser = function(refresh, cb) {
-				var currentUser = $delegate.getCachedCurrent();
+				var currentUser = AuthService.user();
 				// allow callback function without refresh parameter
 				if (angular.isFunction(refresh)) {
 					cb = refresh;
