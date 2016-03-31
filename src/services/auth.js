@@ -94,8 +94,8 @@
 		// https://docs.angularjs.org/api/auto/service/$provide
 		this.$get = initService;
 		
-		initService.$inject = ['$state', '$rootScope', '$injector'];
-		function initService($state, $rootScope, $injector)
+		initService.$inject = ['$state', '$rootScope', '$injector', '$cookies'];
+		function initService($state, $rootScope, $injector, $cookies)
 		{
 			if (options.ignore !== true) {
 				// check access when page is opened
@@ -404,6 +404,8 @@
 
 			function logout(){
 				$injector.invoke(options.logout);
+				$cookies.remove('access_token');
+				$cookies.remove('userId');
 				user(null);
 			}
 		}
