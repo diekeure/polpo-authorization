@@ -1,12 +1,5 @@
 /* global angular */
 
-(function () {
-	'use strict';
-	
-	angular.module('polpo.authorization', ['ui.router', 'lbServices']);
-})();
-/* global angular */
-
 (function(){
     'use strict';
 
@@ -70,6 +63,13 @@
 		
 	}
 
+})();
+/* global angular */
+
+(function () {
+	'use strict';
+	
+	angular.module('polpo.authorization', ['ui.router', 'lbServices', 'ngCookies']);
 })();
 (function () {
 	'use strict';

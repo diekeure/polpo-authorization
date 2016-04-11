@@ -3,5 +3,5 @@
 (function () {
 	'use strict';
 	
-	angular.module('polpo.authorization', ['ui.router', 'lbServices']);
+	angular.module('polpo.authorization', ['ui.router', 'lbServices', 'ngCookies']);
 })();
