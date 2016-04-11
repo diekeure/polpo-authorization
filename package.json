@@ -6,7 +6,6 @@
   },
   "main": "dist/polpo-authorization.min.js",
   "dependencies": {
-    "angular-cookies": "^1.4.0",
   },
   "devDependencies": {
     "gulp": "^3.9.0",
