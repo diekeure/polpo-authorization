@@ -60,7 +60,7 @@
 
 				// Handle response by adding properties to the LBAuth and then calling save
 				LoopBackAuth.currentUserId = params.userId || getQueryVariable('userId');
-				LoopBackAuth.accessTokenId = params.accessToken || getQueryVariable('access_token') || getQueryVariable('accessToken');
+				LoopBackAuth.accessTokenId = params.accessToken || getQueryVariable('accessToken');
 
 
 				// Note that you can also set LoopBackAuth.rememberMe which changes the storage from session to local.
