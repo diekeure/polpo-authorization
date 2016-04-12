@@ -49,7 +49,7 @@
 				var vars = query.split('&');
 				for (var i = 0; i < vars.length; i++) {
 					var pair = vars[i].split('=');
-					if (decodeURIComponent(pair[0]) == variable) {
+					if (decodeURIComponent(pair[0]) === variable) {
 						return decodeURIComponent(pair[1]);
 					}
 				}
@@ -61,6 +61,12 @@
 				// Handle response by adding properties to the LBAuth and then calling save
 				LoopBackAuth.currentUserId = params.userId || getQueryVariable('userId');
 				LoopBackAuth.accessTokenId = params.accessToken || getQueryVariable('accessToken');
+				if(getQueryVariable('accessToken') !== undefined){
+					var newUrl = window.location.href.replace('userId='+LoopBackAuth.currentUserId, '').replace('accessToken='+LoopBackAuth.accessTokenId, '');
+					newUrl = newUrl.replace(new RegExp(/\?\&/, 'g'), '?');
+					newUrl = newUrl.replace(new RegExp(/\?\#/, 'g'), '#');
+					window.location.replace(newUrl);
+				}
 
 
 				// Note that you can also set LoopBackAuth.rememberMe which changes the storage from session to local.
