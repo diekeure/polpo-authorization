@@ -40,7 +40,13 @@
 					if (cb) {
 						return cb(user);
 					}
-				});
+				}).catch(function(err){
+		         	if(err.status === 401){
+		            	LoopBackAuth.currentUserId = null;
+		            	LoopBackAuth.accessTokenId = null;
+		            	LoopBackAuth.save();
+		          	}
+		        });
 				return promise;
 			};
 
