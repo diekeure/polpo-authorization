@@ -44,6 +44,9 @@
 		         	if(err.status === 401){
 		            	LoopBackAuth.currentUserId = null;
 		            	LoopBackAuth.accessTokenId = null;
+		            	LoopBackAuth.rememberMe = 1;
+		            	LoopBackAuth.save();
+		            	LoopBackAuth.rememberMe = 0;
 		            	LoopBackAuth.save();
 		          	}
 		        });
