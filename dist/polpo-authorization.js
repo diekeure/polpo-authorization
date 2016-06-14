@@ -681,10 +681,12 @@
 			}
 
 			function logout(){
-				$injector.invoke(options.logout);
-				$cookies.remove('access_token');
-				$cookies.remove('userId');
-				user(null);
+				return $injector.invoke(options.logout).$promise.then(function(result){
+		          $cookies.remove('access_token');
+		          $cookies.remove('userId');
+		          user(null);
+		          return result;
+		        });
 			}
 		}
 	}
