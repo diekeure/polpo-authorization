@@ -64,7 +64,7 @@
 				}
 			}
 
-			if(!$delegate.isAuthenticated()){
+			if(!$delegate.isAuthenticated() || getQueryVariable('accessToken') !== undefined){
 				var params = $location.search();
 
 				// Handle response by adding properties to the LBAuth and then calling save
