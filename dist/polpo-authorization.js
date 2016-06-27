@@ -86,9 +86,9 @@
 
 			if(getQueryVariable('accessToken') !== undefined){
 				var newUrl = window.location.href.replace('userId='+LoopBackAuth.currentUserId, '').replace('accessToken='+LoopBackAuth.accessTokenId, '');
-				newUrl = newUrl.replace(new RegExp(/\?\&/, 'g'), '?');
-				newUrl = newUrl.replace(new RegExp(/\?\#/, 'g'), '#');
-				newUrl = newUrl.replace(new RegExp(/\#\?/, 'g'), '#');
+				newUrl = newUrl.replace(/\?\&/g, '?');
+				newUrl = newUrl.replace(/\?\#/g, '#');
+				newUrl = newUrl.replace(/\#\?/g, '#');
 				window.location.replace(newUrl);
 			}
 			
