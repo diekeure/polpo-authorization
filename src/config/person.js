@@ -4,12 +4,14 @@
     'use strict';
 
 	angular.module('polpo.authorization').config(authConfig);
-	
-	authConfig.$inject = ['$provide', 'AuthServiceProvider'];
-    function authConfig($provide, AuthServiceProvider) {
-		
+
+  authConfig.$inject = ['$provide', 'AuthServiceProvider', '$qProvider'];
+    function authConfig($provide, AuthServiceProvider, $qProvider) {
+
+    // silence chrome unhandled rejection error
+    $qProvider.errorOnUnhandledRejections(false);
 		$provide.decorator('Person', personDecorator);
-		
+
 		personDecorator.$inject = ['$delegate', '$rootScope', '$q', 'AuthService', 'LoopBackAuth', '$location'];
 		function personDecorator($delegate, $rootScope, $q, AuthService, LoopBackAuth, $location)
 		{

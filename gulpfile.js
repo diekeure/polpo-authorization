@@ -28,3 +28,6 @@ gulp.task('scripts', function () {
 gulp.task('build', function () {
 	gulp.start('scripts');
 });
+gulp.task('default', function () {
+    gulp.start('build');
+});
