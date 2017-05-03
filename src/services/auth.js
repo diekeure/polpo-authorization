@@ -117,8 +117,13 @@
 			/*
 			 * private functions
 			 */
-			function changeStart(event, toState, toParams)	//, fromState, fromParams
+			function changeStart(event, toState, toParams, fromState) //, fromParams
 			{
+        // catch case for when we are opening a link directly in the browser
+        // or it would redirect indefinite until the userPromise is resolved
+        if (fromState.name === '') {
+          return;
+        }
 				// if pre-checks return true, we're authorized
 				if (options.ignore && options.ignore(toState.name)) {
 					return;
