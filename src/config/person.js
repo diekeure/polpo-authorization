@@ -12,8 +12,8 @@
     $qProvider.errorOnUnhandledRejections(false);
 		$provide.decorator('Person', personDecorator);
 
-		personDecorator.$inject = ['$delegate', '$rootScope', '$q', 'AuthService', 'LoopBackAuth', '$location'];
-		function personDecorator($delegate, $rootScope, $q, AuthService, LoopBackAuth, $location)
+		personDecorator.$inject = ['$delegate', '$rootScope', '$q', 'AuthService', 'LoopBackAuth'];
+		function personDecorator($delegate, $rootScope, $q, AuthService, LoopBackAuth)
 		{
 			$delegate.getCurrentUser = function(refresh, cb) {
 				var currentUser = AuthService.user();
@@ -57,6 +57,12 @@
 
 			function getQueryVariable(variable) {
 				var query = window.location.search.substring(1);
+				if(query === ''){
+					if(window.location.hash.indexOf('?') > -1){
+						//parameters are passed after hash
+						query = window.location.hash.split('?')[1];
+					}
+				}
 				var vars = query.split('&');
 				for (var i = 0; i < vars.length; i++) {
 					var pair = vars[i].split('=');
@@ -67,15 +73,8 @@
 			}
 
 			if(!$delegate.isAuthenticated() || getQueryVariable('accessToken') !== undefined){
-				var params = $location.search();
-
-				// Handle response by adding properties to the LBAuth and then calling save
-				LoopBackAuth.currentUserId = params.userId || getQueryVariable('userId');
-				LoopBackAuth.accessTokenId = params.accessToken || getQueryVariable('accessToken');
-
-				// Note that you can also set LoopBackAuth.rememberMe which changes the storage from session to local.
-
-				// Saves the values to local storage.
+				LoopBackAuth.currentUserId = getQueryVariable('userId');
+				LoopBackAuth.accessTokenId = getQueryVariable('accessToken');
 				LoopBackAuth.save();
 			}
 			
