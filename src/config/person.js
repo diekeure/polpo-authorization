@@ -38,6 +38,9 @@
 					// send global event that user is updated
 					// catch with `$rootScope.$on('user.update', function(e, user) {});´ where needed (f.i. HeaderController)
 					$rootScope.$emit('user.update', user);
+          
+          // do we have to perform additional checks?
+          AuthService.afterLogin();
 
 					if (cb) {
 						return cb(user);

@@ -48,6 +48,7 @@
 				allowedTypes: [],
 				ignore: true,
 				onLogin: null,
+        afterLogin: null,
 				onDenied: null,
 				resolve: function(Person) {
 					return Person.getCurrentUser();
@@ -111,7 +112,8 @@
 				user: user,
 				getUserRoles: getUserRoles,
 				userPromise: userPromise,
-				logout: logout
+				logout: logout,
+        afterLogin: afterLogin
 			};
 			
 			/*
@@ -415,6 +417,17 @@
 		          return result;
 		        });
 			}
+      
+      /**
+       * Perform additional checks after logging in (f.i. accepted terms)
+       * @returns {*} - whatever our afterLogin function returns
+       */
+      function afterLogin()
+      {
+        if (options.afterLogin) {
+          return $injector.invoke(options.afterLogin);
+        }
+      }
 		}
 	}
 })();
